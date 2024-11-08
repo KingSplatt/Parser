@@ -5,7 +5,7 @@ public class miEscaner {
     private final String delimitador = ";";
     private int indice;
     private String tokenActual = "";
-    private boolean isPalabraR = false, isOp = false, isDel = false, isNum = false, isId = false;
+    private String tipoToken = "";
 
     public miEscaner(String codigo) {
         this.tokens = codigo.split("\\s+");
@@ -13,98 +13,77 @@ public class miEscaner {
         this.tokenActual = tokens[indice];
     }
 
+    public String getTipoToken() {
+        return this.tipoToken;
+    }
+
+    public void setTipoToken(String tipo) {
+        this.tipoToken = tipo;
+    }
+
     public String getToken(boolean avanza) {
         boolean tokenValido = false;
-        isPalabraR = false;
-        isOp = false;
-        isDel = false;
-        isNum = false;
-        isId = false;
         if (indice >= tokens.length) {
-            return "Fin de archivo";
+            setTipoToken("EOF");
+            return "EOF";
         }
-        tokenActual = tokens[indice];
+        this.tokenActual = tokens[indice];
         if (avanza) {
             indice++;
         }
         // Verificar si es una palabra reservada
         for (String reservada : reservadas) {
-            if (tokenActual.equals(reservada)) {
+            if (this.tokenActual.equals(reservada)) {
                 tokenValido = true;
-                isPalabraR = true;
+                setTipoToken("reservada");
                 break;
             }
         }
         // Verificar si es un operador
         if (!tokenValido) {
             for (String operador : operadores) {
-                if (tokenActual.equals(operador)) {
+                if (this.tokenActual.equals(operador)) {
                     tokenValido = true;
-                    isOp = true;
+                    setTipoToken("operador");
                     break;
                 }
             }
         }
         // Verificar si es un delimitador
         if (!tokenValido) {
-            if (tokenActual.equals(delimitador)) {
+            if (this.tokenActual.equals(delimitador)) {
                 tokenValido = true;
-                isDel = true;
+                setTipoToken(delimitador);
             }
         }
-        // Verificar si es un número
+        // Verificar si es un numero
         if (!tokenValido) {
-            if (tokenActual.matches("[0-9]+")) {
+            if (this.tokenActual.matches("[0-9]+")) {
                 tokenValido = true;
-                isNum = true;
+                setTipoToken("num");
             }
         }
         // Verificar si es un identificador
         if (!tokenValido) {
-            if (tokenActual.matches("[a-z|A-Z][a-z|A-Z|0-9]*")) {
+            if (this.tokenActual.matches("[a-z|A-Z][a-z|A-Z|0-9]*")) {
                 tokenValido = true;
-                isId = true;
+                setTipoToken("id");
+            } else {
+                tokenValido = false;
             }
         }
 
         if (tokenValido) {
-            return tokenActual;
+            return this.tokenActual;
 
         } else {
-            error(tokenActual);
+            error(this.tokenActual);
+            setTipoToken("Token invalido");
             return "Token invalido";
         }
     }
 
-    public String getSigToken() {
-        if (indice >= tokens.length) {
-            return "Fin de archivo";
-        }
-        indice++;
-        return tokens[indice];
-    }
-
     public void error(String token) {
         System.out.println("Token no valido para: " + token);
-    }
-
-    public boolean getisPalabraR() {
-        return isPalabraR;
-    }
-
-    public boolean getisOp() {
-        return isOp;
-    }
-
-    public boolean getisDel() {
-        return isDel;
-    }
-
-    public boolean getisNum() {
-        return isNum;
-    }
-
-    public boolean getisId() {
-        return isId;
     }
 }

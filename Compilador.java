@@ -1,7 +1,7 @@
 public class Compilador {
 
     public static void main(String[] args) {
-        String codigo = "print 5 + 5";
+        String codigo = "a83 int ; b32 string ; while a3 do b8";
         Parser parser = new Parser(codigo);
         parser.P();
     }
