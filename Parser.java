@@ -1,18 +1,7 @@
 public class Parser {
     private String token = "";
-    private String tipoToken = "";
     private miEscaner scanner;
-    private Pair[] tablaSimbolos = {
-            new Pair("id", 1),
-            new Pair("int", 2),
-            new Pair("string", 3),
-            new Pair("while", 4),
-            new Pair("do", 5),
-            new Pair("print", 6),
-            new Pair("+", 7),
-            new Pair("=", 8),
-            new Pair(";", 9)
-    };
+    private boolean avanza = false;
 
     public Parser(String codigo) {
         scanner = new miEscaner(codigo);
@@ -22,10 +11,11 @@ public class Parser {
 
     public void comer(String tok) {
         if (this.token.equals(tok)) {
-            this.tipoToken = scanner.getTipoToken();
             this.token = scanner.getToken(true);
-            System.out.println(scanner.getTipoToken());
+            this.avanza = true;
+            System.out.println("Token: " + this.token);
         } else {
+            this.avanza = false;
             error();
         }
     }
@@ -44,11 +34,6 @@ public class Parser {
         }
     }
 
-    public void error() {
-        System.out.println("Error de sintaxis");
-        System.exit(0);
-    }
-
     public void P() {
         D();
         S();
@@ -59,7 +44,7 @@ public class Parser {
         switch (token) {
             case "id":
                 comer("id");
-                id(token);
+                id();
                 intorstring(token);
                 comer(";");
                 D();
@@ -97,18 +82,20 @@ public class Parser {
 
     // pendiente por ver
     public void E() {
-        switch (token) {
-            case "id":
-                comer("id");
-                break;
-            case "+":
-                comer("+");
-                E();
-                break;
-            default:
-                error();
-                break;
+        if (avanza) {
+            comer("id");
+            comer("+");
+            comer("id");
         }
+        comer("id");
     }
 
+    public void id() {
+
+    }
+
+    public void error() {
+        System.out.println("Error de sintaxis");
+        System.exit(0);
+    }
 }
