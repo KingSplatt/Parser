@@ -1,7 +1,9 @@
+
 public class Parser {
     private String token = "";
     private miEscaner scanner;
     private boolean avanza = false;
+    private boolean id = false;
 
     public Parser(String codigo) {
         scanner = new miEscaner(codigo);
@@ -13,6 +15,7 @@ public class Parser {
         if (this.token.equals(tok)) {
             this.token = scanner.getToken(true);
             this.avanza = true;
+            this.id = scanner.getisId();
             System.out.println("Token: " + this.token);
         } else {
             this.avanza = false;
@@ -44,7 +47,6 @@ public class Parser {
         switch (token) {
             case "id":
                 comer("id");
-                id();
                 intorstring(token);
                 comer(";");
                 D();
@@ -82,16 +84,23 @@ public class Parser {
 
     // pendiente por ver
     public void E() {
-        if (avanza) {
-            comer("id");
-            comer("+");
-            comer("id");
+        if (id) {
+            switch (token) {
+                case "id":
+                    comer("id");
+                    break;
+                case "+":
+                    comer("+");
+                    E();
+                    break;
+
+                default:
+                    error();
+                    break;
+            }
+        } else {
+            throw new Error("Error de sintaxis se espera un id");
         }
-        comer("id");
-    }
-
-    public void id() {
-
     }
 
     public void error() {
