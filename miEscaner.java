@@ -8,9 +8,9 @@ public class miEscaner {
     private String tipoToken = "";
 
     public miEscaner(String codigo) {
-        tokens = codigo.split("\\s+");
-        indice = 0;
-        tokenActual = tokens[indice];
+        this.tokens = codigo.split("\\s+");
+        this.indice = 0;
+        this.tokenActual = tokens[indice];
     }
 
     public String getTipoToken() {
