@@ -98,23 +98,20 @@ public class Parser {
 
     // pendiente por ver
     public void E() {
-        if (id) {
-            switch (token) {
-                case "id":
-                    comer("id");
-                    break;
-                case "+":
-                    comer("+");
-                    E();
-                    break;
+        switch (this.token) {
+            case M_id:
+                comer("id");
+                break;
+            case M_operador:
+                comer("+");
+                E();
+                break;
 
-                default:
-                    error();
-                    break;
-            }
-        } else {
-            throw new Error("Error de sintaxis se espera un id");
+            default:
+                error();
+                break;
         }
+
     }
 
     public boolean id() {
