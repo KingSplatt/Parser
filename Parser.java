@@ -85,6 +85,7 @@ public class Parser {
                 comer(M_id);
                 comer(M_igual);
                 E();
+                comer(M_puntoycoma);
                 break;
             case M_print:
                 comer(M_print);
@@ -99,17 +100,13 @@ public class Parser {
     // pendiente por ver
     public void E() {
         if (this.token.equals(M_id)) {
-
-            String aux = scanner.goFront();
-            System.out.println("tokennn " + this.token);
-            System.out.println("aux: " + aux);
-            if (aux.equals(M_operador)) {
-                scanner.goBack();
-                comer(M_id);
+            comer(M_id);
+            if (this.token.equals(M_operador)) {
                 comer(M_operador);
                 E();
+            } else {
+                return;
             }
-            comer(M_id);
         } else {
             return;
         }
