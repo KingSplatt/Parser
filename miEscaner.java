@@ -21,6 +21,24 @@ public class miEscaner {
         this.tipoToken = tipo;
     }
 
+    public String goFront() {
+        if (indice < tokens.length) {
+            indice++;
+            return tokens[indice];
+        } else {
+            return "No hay mas tokens";
+        }
+    }
+
+    public String goBack() {
+        if (indice > 0) {
+            indice--;
+            return tokens[indice];
+        } else {
+            return "No hay mas tokens";
+        }
+    }
+
     public String getToken(boolean avanza) {
         boolean tokenValido = false;
         if (indice >= tokens.length) {

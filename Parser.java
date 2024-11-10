@@ -98,19 +98,35 @@ public class Parser {
 
     // pendiente por ver
     public void E() {
-        switch (this.token) {
-            case M_id:
-                comer("id");
-                break;
-            case M_operador:
-                comer("+");
-                E();
-                break;
+        if (this.token.equals(M_id)) {
 
-            default:
-                error();
-                break;
+            String aux = scanner.goFront();
+            System.out.println("tokennn " + this.token);
+            System.out.println("aux: " + aux);
+            if (aux.equals(M_operador)) {
+                scanner.goBack();
+                comer(M_id);
+                comer(M_operador);
+                E();
+            }
+            comer(M_id);
+        } else {
+            return;
         }
+
+        // switch (this.token) {
+        // case M_id:
+        // comer("id");
+        // break;
+        // case M_operador:
+        // comer("+");
+        // E();
+        // break;
+
+        // default:
+        // error();
+        // break;
+        // }
 
     }
 
