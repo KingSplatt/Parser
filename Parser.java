@@ -3,8 +3,6 @@ import java.io.IOException;
 public class Parser extends IOException {
     private String token;
     private miEscaner scanner;
-    private boolean avanza = false;
-    private boolean id = false;
     private final String M_id = "id",
             M_int = "int",
             M_string = "string",
@@ -15,9 +13,16 @@ public class Parser extends IOException {
             M_operador = "+",
             M_igual = "=";
 
-    public Parser(String codigo) {
-        scanner = new miEscaner(codigo);
-        avanzar();
+    public Parser(String codigo) throws Exception {
+        try {
+            if (codigo.equals("")) {
+                throw new RuntimeException();
+            }
+            scanner = new miEscaner(codigo);
+            avanzar();
+        } catch (Exception e) {
+            throw new RuntimeException("No se puede leer un archivo vacio");
+        }
     }
 
     public void avanzar() {
@@ -34,23 +39,23 @@ public class Parser extends IOException {
     }
 
     public void comer(String tok) {
+
         if (this.token.equals(tok)) {
             avanzar();
-            this.avanza = true;
         } else {
-            this.avanza = false;
             System.out.println("Error en comer");
             error();
         }
+
     }
 
     public void intorstring(String tok) {
         switch (tok) {
             case "int":
-                comer("int");
+                comer(M_int);
                 break;
             case "string":
-                comer("string");
+                comer(M_string);
                 break;
             default:
                 error();
@@ -64,7 +69,7 @@ public class Parser extends IOException {
             S();
             System.exit(0);
         } catch (Exception e) {
-            System.out.println("Error de sintaxis");
+            throw new Exception("Error en P");
         }
     }
 
@@ -84,16 +89,19 @@ public class Parser extends IOException {
     }
 
     // ponerlo con try catch para detectar errores
-    public void S() {
+    public void S() throws Exception {
         switch (this.token) {
             case M_while:
                 try {
                     comer(M_while);
                     E();
+                    if (!this.token.equals(M_do)) {
+                        new Exception("Se esperaba do");
+                    }
                     comer("do");
                     S();
                 } catch (Exception e) {
-                    System.out.println("Error en el while");
+                    System.err.println(e);
                 }
                 break;
             case M_id:
@@ -113,18 +121,24 @@ public class Parser extends IOException {
         }
     }
 
-    // pendiente por ver
-    public void E() {
-        if (this.token.equals(M_id)) {
-            comer(M_id);
-            if (this.token.equals(M_operador)) {
-                comer(M_operador);
-                E();
+    // pendiente por ver para print a3 + (espera un id)
+    public void E() throws Exception {
+        try {
+            if (!this.token.equals(M_id)) {
+                throw new Exception("Expresion");
             } else {
-                return;
+                comer(M_id);
+                if (this.token.equals(M_operador)) {
+                    comer(M_operador);
+                    System.out.println("hola");
+                    E();
+                }
+                if (this.token.equals(M_id)) {
+                    throw new Exception("Operador");
+                }
             }
-        } else {
-            return;
+        } catch (Exception e) {
+            throw new Exception("Error se esperaba una " + e.getMessage());
         }
 
         // switch (this.token) {
