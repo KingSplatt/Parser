@@ -1,5 +1,6 @@
+import java.io.IOException;
 
-public class Parser {
+public class Parser extends IOException {
     private String token;
     private miEscaner scanner;
     private boolean avanza = false;
@@ -38,6 +39,7 @@ public class Parser {
             this.avanza = true;
         } else {
             this.avanza = false;
+            System.out.println("Error en comer");
             error();
         }
     }
@@ -56,30 +58,43 @@ public class Parser {
         }
     }
 
-    public void P() {
-        D();
-        S();
-        System.exit(0);
-    }
-
-    public void D() {
-        if (this.token.equals(M_id)) {
-            comer(M_id);
-            intorstring(this.token);
-            comer(";");
+    public void P() throws Exception {
+        try {
             D();
-        } else {
-            return;
+            S();
+            System.exit(0);
+        } catch (Exception e) {
+            System.out.println("Error de sintaxis");
         }
     }
 
+    public void D() {
+        try {
+            if (this.token.equals(M_id)) {
+                comer(M_id);
+                intorstring(this.token);
+                comer(";");
+                D();
+            } else {
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Se esperaba un id");
+        }
+    }
+
+    // ponerlo con try catch para detectar errores
     public void S() {
         switch (this.token) {
             case M_while:
-                comer(M_while);
-                E();
-                comer("do");
-                S();
+                try {
+                    comer(M_while);
+                    E();
+                    comer("do");
+                    S();
+                } catch (Exception e) {
+                    System.out.println("Error en el while");
+                }
                 break;
             case M_id:
                 comer(M_id);
@@ -92,6 +107,7 @@ public class Parser {
                 E();
                 break;
             default:
+                System.out.println("Error en S");
                 error();
                 break;
         }
