@@ -6,7 +6,6 @@ public class miEscaner {
     private int indice;
     private String tokenActual = "";
     private String tipoToken = "";
-    private boolean id = false;
 
     public miEscaner(String codigo) {
         this.tokens = codigo.split("\\s+");
@@ -20,14 +19,6 @@ public class miEscaner {
 
     public void setTipoToken(String tipo) {
         this.tipoToken = tipo;
-    }
-
-    public boolean id() {
-        return this.id;
-    }
-
-    public void setId(boolean id) {
-        this.id = id;
     }
 
     public String goFront() {
@@ -58,16 +49,7 @@ public class miEscaner {
         if (avanza) {
             indice++;
         }
-        // verifica si es un id
-        if (this.tokenActual.equals("id")) {
-            setId(true);
-        } else {
-            setId(false);
-        }
-        if (id) {
-            setTipoToken("id");
-            return "id";
-        }
+
         // Verificar si es una palabra reservada
         for (String reservada : reservadas) {
             if (this.tokenActual.equals(reservada)) {

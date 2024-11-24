@@ -27,7 +27,7 @@ public class Parser extends IOException {
 
     public void avanzar() {
         this.token = scanner.getToken(true);
-        if (id()) {
+        if (scanner.getTipoToken().equals("id")) {
             this.token = "id";
             System.out.println("Token: " + this.token);
         } else {
@@ -126,13 +126,18 @@ public class Parser extends IOException {
         try {
             if (!this.token.equals(M_id)) {
                 throw new Exception("Expresion");
-            } else {
+            }
+            if (this.token.equals(M_id)) {
                 comer(M_id);
                 if (this.token.equals(M_operador)) {
                     comer(M_operador);
-                    System.out.println("hola");
-                    E();
+                    if (this.token.equals(M_id)) {
+                        comer(M_id);
+                    } else {
+                        throw new Exception("id");
+                    }
                 }
+
                 if (this.token.equals(M_id)) {
                     throw new Exception("Operador");
                 }
@@ -155,13 +160,6 @@ public class Parser extends IOException {
         // break;
         // }
 
-    }
-
-    public boolean id() {
-        if (scanner.getTipoToken().equals("id")) {
-            return true;
-        }
-        return false;
     }
 
     public void error() {
