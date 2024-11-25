@@ -31,9 +31,6 @@ public class Parser extends IOException {
             this.token = "id";
             System.out.println("Token: " + this.token);
         } else {
-            if (this.token.equals("EOF")) {
-                System.exit(0);
-            }
             System.out.println("Token: " + this.token);
         }
     }
@@ -73,49 +70,66 @@ public class Parser extends IOException {
             S();
             System.exit(0);
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            System.err.println(e);
         }
     }
 
     public void D() {
-        try {
-            if (this.token.equals(M_id)) {
-                comer(M_id);
-                intorstring(this.token);
-                comer(";");
-                D();
-            } else {
-                return;
-            }
-        } catch (Exception e) {
-            System.out.println("Se esperaba un id");
+        if (this.token.equals(M_id)) {
+            comer(M_id);
+            intorstring(this.token);
+            comer(";");
+            D();
+        } else {
+            return;
         }
+
     }
 
     // ponerlo con try catch para detectar errores
     public void S() throws Exception {
-        switch (this.token) {
-            case M_while:
+        try {
+            if (this.token.equals(M_while)) {
                 comer(M_while);
                 E();
                 comer(M_do);
                 S();
-                break;
-            case M_id:
+            } else if (this.token.equals(M_id)) {
                 comer(M_id);
                 comer(M_igual);
                 E();
-                comer(M_puntoycoma);
-                break;
-            case M_print:
+            } else if (this.token.equals(M_print)) {
                 comer(M_print);
                 E();
-                break;
-            default:
-                System.out.println("Error en S");
-                error();
-                break;
+            } else {
+                throw new Exception("Error se esperaba algo en S (while, id, print)");
+            }
+        } catch (Exception e) {
+            System.err.println(e);
         }
+
+        // switch (this.token) {
+        // case M_while:
+        // comer(M_while);
+        // E();
+        // comer(M_do);
+        // S();
+        // break;
+        // case M_id:
+        // comer(M_id);
+        // comer(M_igual);
+        // E();
+        // comer(M_puntoycoma);
+        // break;
+        // case M_print:
+        // comer(M_print);
+        // E();
+        // break;
+        // default:
+        // System.out.println("Error en S");
+        // error();
+        // break;
+        // }
     }
 
     // pendiente por ver para print a3 + (espera un id)
