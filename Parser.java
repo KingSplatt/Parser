@@ -39,27 +39,31 @@ public class Parser extends IOException {
     }
 
     public void comer(String tok) {
+        try {
+            if (this.token.equals(tok)) {
+                avanzar();
+            } else {
+                throw new Exception("error en " + tok);
+            }
 
-        if (this.token.equals(tok)) {
-            avanzar();
-        } else {
-            System.out.println("Error en comer");
-            error();
+        } catch (Exception e) {
+            System.err.println(e);
+
         }
 
     }
 
     public void intorstring(String tok) {
-        switch (tok) {
-            case "int":
+        try {
+            if (this.token.equals(M_int)) {
                 comer(M_int);
-                break;
-            case "string":
+            } else if (this.token.equals(M_string)) {
                 comer(M_string);
-                break;
-            default:
-                error();
-                break;
+            } else {
+                throw new Exception("Error se esperaba un tipo de dato");
+            }
+        } catch (Exception e) {
+            System.err.println(e);
         }
     }
 
@@ -69,7 +73,7 @@ public class Parser extends IOException {
             S();
             System.exit(0);
         } catch (Exception e) {
-            throw new Exception("Error en P");
+            throw new Exception(e.getMessage());
         }
     }
 
@@ -92,17 +96,10 @@ public class Parser extends IOException {
     public void S() throws Exception {
         switch (this.token) {
             case M_while:
-                try {
-                    comer(M_while);
-                    E();
-                    if (!this.token.equals(M_do)) {
-                        new Exception("Se esperaba do");
-                    }
-                    comer("do");
-                    S();
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
+                comer(M_while);
+                E();
+                comer("do");
+                S();
                 break;
             case M_id:
                 comer(M_id);
