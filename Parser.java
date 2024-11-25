@@ -98,7 +98,7 @@ public class Parser extends IOException {
             case M_while:
                 comer(M_while);
                 E();
-                comer("do");
+                comer(M_do);
                 S();
                 break;
             case M_id:
