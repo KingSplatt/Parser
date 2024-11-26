@@ -23,8 +23,7 @@ public class miEscaner {
 
     public String goFront() {
         if (indice < tokens.length) {
-            indice++;
-            return tokens[indice];
+            return tokens[indice + 1];
         } else {
             return "No hay mas tokens";
         }
@@ -32,8 +31,7 @@ public class miEscaner {
 
     public String goBack() {
         if (indice > 0) {
-            indice--;
-            return tokens[indice];
+            return tokens[indice - 1];
         } else {
             return "No hay mas tokens";
         }

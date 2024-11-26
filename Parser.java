@@ -9,7 +9,6 @@ public class Parser extends IOException {
             M_while = "while",
             M_do = "do",
             M_print = "print",
-            M_puntoycoma = ";",
             M_operador = "+",
             M_igual = "=";
 
@@ -77,6 +76,10 @@ public class Parser extends IOException {
     public void D() {
         if (this.token.equals(M_id)) {
             comer(M_id);
+            if (this.token.equals(M_igual)) {
+                comer(M_igual);
+                return;
+            }
             intorstring(this.token);
             comer(";");
             D();
@@ -86,7 +89,6 @@ public class Parser extends IOException {
 
     }
 
-    // ponerlo con try catch para detectar errores
     public void S() throws Exception {
         try {
             if (this.token.equals(M_while)) {
@@ -96,6 +98,18 @@ public class Parser extends IOException {
                 S();
             } else if (this.token.equals(M_id)) {
                 comer(M_id);
+                if (this.token.equals("EOF")) {
+                    return;
+                }
+                if (this.token.equals(M_operador)) {
+                    comer(M_operador);
+                    if (this.token.equals(M_id)) {
+                        comer(M_id);
+                        return;
+                    } else {
+                        throw new Exception("id");
+                    }
+                }
                 comer(M_igual);
                 E();
             } else if (this.token.equals(M_print)) {
@@ -107,32 +121,8 @@ public class Parser extends IOException {
         } catch (Exception e) {
             System.err.println(e);
         }
-
-        // switch (this.token) {
-        // case M_while:
-        // comer(M_while);
-        // E();
-        // comer(M_do);
-        // S();
-        // break;
-        // case M_id:
-        // comer(M_id);
-        // comer(M_igual);
-        // E();
-        // comer(M_puntoycoma);
-        // break;
-        // case M_print:
-        // comer(M_print);
-        // E();
-        // break;
-        // default:
-        // System.out.println("Error en S");
-        // error();
-        // break;
-        // }
     }
 
-    // pendiente por ver para print a3 + (espera un id)
     public void E() throws Exception {
         try {
             if (!this.token.equals(M_id)) {
@@ -148,7 +138,6 @@ public class Parser extends IOException {
                         throw new Exception("id");
                     }
                 }
-
                 if (this.token.equals(M_id)) {
                     throw new Exception("Operador");
                 }
@@ -156,21 +145,6 @@ public class Parser extends IOException {
         } catch (Exception e) {
             throw new Exception("Error se esperaba una " + e.getMessage());
         }
-
-        // switch (this.token) {
-        // case M_id:
-        // comer("id");
-        // break;
-        // case M_operador:
-        // comer("+");
-        // E();
-        // break;
-
-        // default:
-        // error();
-        // break;
-        // }
-
     }
 
     public void error() {
