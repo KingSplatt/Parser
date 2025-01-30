@@ -26,16 +26,16 @@ public class Compilador extends JPanel {
         panelPrograma = new JPanel();
         JLabel label = new JLabel("Code here");
         label.setBounds(0, 0, 800, 50);
-        panelPrograma.add(label);
+        ventana.add(label, BorderLayout.NORTH);
         panelPrograma.setBounds(0, 0, 800, 800);
         panelPrograma.setBackground(new Color(255, 240, 237));
-        ventana.add(panelPrograma, BorderLayout.NORTH);
+        ventana.add(panelPrograma, BorderLayout.CENTER);
         JTextArea textArea = new JTextArea();
         textArea.setBounds(0, 0, 800, 800);
         panelPrograma.add(textArea);
         JButton botonCompilar = new JButton("Compilar");
         botonCompilar.setBounds(800, 0, 200, 50);
-        ventana.add(botonCompilar);
+        panelPrograma.add(botonCompilar);
     }
 
     public static void main(String[] args) throws Exception {
