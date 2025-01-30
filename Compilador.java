@@ -23,16 +23,20 @@ public class Compilador extends JPanel {
     }
 
     public void agregarPanelPrograma() {
+        // panel
         panelPrograma = new JPanel();
-        JLabel label = new JLabel("Code here");
-        label.setBounds(0, 0, 800, 50);
-        ventana.add(label, BorderLayout.NORTH);
         panelPrograma.setBounds(0, 0, 800, 800);
         panelPrograma.setBackground(new Color(255, 240, 237));
         ventana.add(panelPrograma, BorderLayout.CENTER);
+        // texto
+        JLabel label = new JLabel("Code here");
+        label.setBounds(0, 0, 800, 50);
+        ventana.add(label, BorderLayout.NORTH);
+        // texto programa
         JTextArea textArea = new JTextArea();
-        textArea.setBounds(0, 0, 800, 800);
+        textArea.setBounds(150, 800, 800, 800);
         panelPrograma.add(textArea);
+        // boton compilar
         JButton botonCompilar = new JButton("Compilar");
         botonCompilar.setBounds(800, 0, 200, 50);
         panelPrograma.add(botonCompilar);
