@@ -2,23 +2,44 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Compilador extends JPanel {
+    JFrame ventana;
+    JPanel panelPrograma;
+
     public Compilador() {
-        setBackground(Color.WHITE);
+        super();
+        inicializarFrame();
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.BLACK);
-        g.drawString("Hola Mundo", 100, 100);
+    public void inicializarFrame() {
+        ventana = new JFrame("Compilador");
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setSize(1200, 800);
+        ventana.add(this);
+        ventana.setLocationRelativeTo(null);
+        ventana.setLayout(new BorderLayout());
+        agregarPanelPrograma();
+
+        ventana.setVisible(true);
+    }
+
+    public void agregarPanelPrograma() {
+        panelPrograma = new JPanel();
+        JLabel label = new JLabel("Code here");
+        label.setBounds(0, 0, 800, 50);
+        panelPrograma.add(label);
+        panelPrograma.setBounds(0, 0, 800, 800);
+        panelPrograma.setBackground(new Color(255, 240, 237));
+        ventana.add(panelPrograma, BorderLayout.NORTH);
+        JTextArea textArea = new JTextArea();
+        textArea.setBounds(0, 0, 800, 800);
+        panelPrograma.add(textArea);
+        JButton botonCompilar = new JButton("Compilar");
+        botonCompilar.setBounds(800, 0, 200, 50);
+        ventana.add(botonCompilar);
     }
 
     public static void main(String[] args) throws Exception {
-        JFrame ventana = new JFrame("Compilador");
         Compilador compilador = new Compilador();
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(300, 300);
-        ventana.add(compilador);
-        ventana.setVisible(true);
         // String codigo = "a83 int ; b32 string ; while a3 + a23 do while hola do while
         // pepe do print s + a84";
         // String codigo = "while a63 do while ba28 + a43 do print hola23 + a42";
